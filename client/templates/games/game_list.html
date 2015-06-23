@@ -1,7 +1,9 @@
 <template name="gameList">
-    {{#unless currentUser}}
+    {{#if currentUser}}
+        {{> gameForm}}
+    {{else}}
         {{> accountForm}}
-    {{/unless}}
+    {{/if}}
 
     <div class="row">
         {{#each games}}
