@@ -17,6 +17,14 @@
                     <!-- <a href="{{pathFor 'bestPosts'}}">Best</a> -->
                 </li>
             </ul>
+
+            {{#if currentUser}}
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" class="logout">Logout</a>
+                    </li>
+                </ul>
+            {{/if}}
         </div>
     </nav>
 </template>
