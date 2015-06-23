@@ -1,0 +1,38 @@
+<template name="gameList">
+    {{#unless currentUser}}
+        <div class="row shard">
+            <p class="col-xs-12">Use this form to both make an account and log in.</p>
+            <form class="main form">
+                <div class="form-group col-xs-5">
+                    <div class="controls">
+                        <input name="username" id="username"
+                               type="text" value=""
+                               placeholder="Your username"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group col-xs-5">
+                    <div class="controls">
+                        <input name="password" id="password"
+                               type="password" value=""
+                               placeholder="(optional) Password"
+                               class="form-control">
+                    </div>
+                </div>
+                <input type="submit" value="Submit"
+                       class="col-xs-2 btn btn-primary">
+            </form>
+        </div>
+        <br>
+    {{/unless}}
+
+    <div class="row">
+        {{#each games}}
+            {{> game}}
+        {{else}}
+            <p class="col-xs-12">
+                There aren't any open games at the moment.
+            </p>
+        {{/each}}
+    </div>
+</template>

@@ -1,0 +1,26 @@
+.grid-block, .game, .shard {
+    background: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    background: #eee;
+    color: #666;
+}
+
+#main {
+    position: relative;
+}
+
+.jumbotron {
+    text-align: center;
+}
+.jumbotron h2 {
+    font-size: 60px;
+    font-weight: 100;
+}
