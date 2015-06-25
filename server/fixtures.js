@@ -1,4 +1,4 @@
-if (Games.find().count() === 0) {
+if (GameRooms.find().count() === 0) {
     var now = new Date().getTime();
 
     var tomId = Meteor.users.insert({
@@ -10,22 +10,32 @@ if (Games.find().count() === 0) {
     });
     var sacha = Meteor.users.findOne(sachaId);
 
-    Games.insert({
+    GameRooms.insert({
         title: 'Casual Scrabual',
+        passwordProtected: false,
+        password: '',
         userId: sacha._id,
         author: sacha.profile.name,
         maxPlayers: 4,
-        players: [sacha._id],
+        players: [{
+            _id: sacha._id,
+            username: sacha.profile.name
+        }],
         open: true,
         createdAt: new Date(now - 1*3600*1000)
     });
 
-    Games.insert({
+    GameRooms.insert({
         title: 'Petra Tournament Finals',
+        passwordProtected: true,
+        password: 'foobar',
         userId: tom._id,
         author: tom.profile.name,
         maxPlayers: 3,
-        players: [tom._id],
+        players: [{
+            _id: tom._id,
+            username: tom.profile.name
+        }],
         open: true,
         createdAt: new Date(now - 3*3600*1000)
     });
