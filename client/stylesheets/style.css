@@ -1,4 +1,4 @@
-.grid-block, .game, .shard {
+.grid-block, .shard {
     background: #fff;
     border-radius: 3px;
     padding: 10px;
@@ -23,4 +23,16 @@ body {
 .jumbotron h2 {
     font-size: 60px;
     font-weight: 100;
+}
+
+.game-rooms-container {
+    margin: 0;
+}
+
+.left-col {
+    border-right: 1px solid #eee;
+}
+
+.right-col {
+    border-left: 1px solid #eee;
 }

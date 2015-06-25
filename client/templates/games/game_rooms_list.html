@@ -1,0 +1,19 @@
+<template name="gameRoomsList">
+    {{#if currentUser}}
+        {{> gameRoomForm}}
+    {{else}}
+        {{> accountForm}}
+    {{/if}}
+
+    <div>
+        <div class="row game-rooms-container">
+            {{#each gameRooms}}
+                {{> gameRoom}}
+            {{else}}
+                <p class="col-xs-12">
+                    There aren't any open games at the moment.
+                </p>
+            {{/each}}
+        </div>
+    </div>
+</template>
