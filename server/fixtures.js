@@ -17,7 +17,10 @@ if (GameRooms.find().count() === 0) {
         userId: sacha._id,
         author: sacha.profile.name,
         maxPlayers: 4,
-        players: [sacha._id],
+        players: [{
+            _id: sacha._id,
+            username: sacha.profile.name
+        }],
         open: true,
         createdAt: new Date(now - 1*3600*1000)
     });
@@ -29,7 +32,10 @@ if (GameRooms.find().count() === 0) {
         userId: tom._id,
         author: tom.profile.name,
         maxPlayers: 3,
-        players: [tom._id],
+        players: [{
+            _id: tom._id,
+            username: tom.profile.name
+        }],
         open: true,
         createdAt: new Date(now - 3*3600*1000)
     });

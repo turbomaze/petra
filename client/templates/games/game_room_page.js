@@ -5,6 +5,17 @@ var isRoomOwner = function(gameRoom) {
 Template.gameRoomPage.helpers({
     isRoomOwner: function() {
         return isRoomOwner(this);
+    },
+    normalPlayers: function() {
+        var ownerId = this.userId;
+        return this.players.filter(function(player) {
+            console.log('-------------------');
+            console.log(ownerId);
+            console.log(Meteor.userId());
+            console.log('-------------------');
+            //as long as they're not the author
+            return player._id !== ownerId;
+        });
     }
 });
 

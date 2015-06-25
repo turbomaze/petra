@@ -25,6 +25,11 @@
                         {{author}}
                         <span style="float: right" class="glyphicon glyphicon-king" aria-hidden="true"></span>
                     </li>
+                    {{#each normalPlayers}}
+                        <li class="list-group-item">
+                            {{username}}
+                        </li>
+                    {{/each}}
                 </ul>
             </div>
         </div>
