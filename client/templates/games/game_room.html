@@ -1,19 +1,21 @@
 <template name="gameRoom">
-    <div class="game-room shard col-xs-4">
-        <h3>
-            {{#if passwordProtected}}
-                <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-            {{/if}}
-            {{title}}
-            </h3>
-        <p>by {{author}}</p>
-        <p>Players: {{currentNumPlayers}}/{{maxPlayers}}</p>
+    <div class="game-room shard">
+        <div class="game-room-well">
+            <h4>
+                {{#if passwordProtected}}
+                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                {{/if}}
+                {{title}}
+            </h4>
+            <p>by {{author}}</p>
+            <p>Players: {{currentNumPlayers}}/{{maxPlayers}}</p>
 
-        {{#if currentUser}}
-            <a href="#" class="join btn btn-primary">
-                Join
-            </a>
-            <a href="{{pathFor 'gameRoomPage'}}">GOGOGO</a>
-        {{/if}}
+            {{#if currentUser}}
+                <a href="#" class="join btn btn-primary" style="width: 100%">
+                    Join
+                </a><br>
+                <a href="{{pathFor 'gameRoomPage'}}">GOGOGO</a>
+            {{/if}}
+        </div>
     </div>
 </template>
