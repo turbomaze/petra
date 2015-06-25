@@ -43,4 +43,10 @@
             </div>
         {{/if}}
     </div>
+
+    <script>
+    window.addEventListener('beforeunload', function() {
+        Meteor.call('removeJoinAuth');
+    });
+    </script>
 </template>
