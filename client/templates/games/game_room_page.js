@@ -8,14 +8,11 @@ Template.gameRoomPage.helpers({
     },
     normalPlayers: function() {
         var ownerId = this.userId;
-        return this.players.filter(function(player) {
-            console.log('-------------------');
-            console.log(ownerId);
-            console.log(Meteor.userId());
-            console.log('-------------------');
+        var nonOwners = this.players.filter(function(player) {
             //as long as they're not the author
             return player._id !== ownerId;
         });
+        return nonOwners;
     }
 });
 
