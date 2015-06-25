@@ -40,6 +40,7 @@ minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
 mongo@1.1.0
+mongo-livedata@1.0.8
 npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
 ordered-dict@1.0.3
@@ -58,6 +59,7 @@ spacebars-compiler@1.0.6
 srp@1.0.3
 templating@1.1.1
 tracker@1.0.7
+turbomaze:errors@0.0.1
 twbs:bootstrap@3.3.5
 ui@1.0.6
 underscore@1.0.3

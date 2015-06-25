@@ -20,13 +20,20 @@ Template.gameRoom.events({
         Meteor.call(
             'joinGameRoom', roomId, password,
             function(err, result) {
-                if (err) return console.log(err.reason);
+                if (err) return Errors.throw(err.reason);
 
-                console.log(result);
-                if (result.success) {
+                if (result.alreadyInRoom) {
+                    Errors.throw('You\'re already in a room.');
+                } else if (result.isAtCapacity) {
+                    Errors.throw('Sorry, the room you\'re trying to join is full.');
+                } else if (result.wrongPassword) {
+                    Errors.throw('Incorrect password.');
+                } else if (result.success) {
                     Router.go('gameRoomPage', {
                         _id: roomId
                     });
+                } else {
+                    Errors.throw('An unknown error prevented you from joining this room.');
                 }
             }
         );

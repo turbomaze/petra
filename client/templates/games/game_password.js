@@ -1,9 +1,13 @@
+Template.gamePassword.onCreated(function() {
+    Session.set('gamePasswordErrors', {});
+});
+
 Template.gamePassword.helpers({
-    errorClass: function(field) {
-        return false;
-    },
     errorMessage: function(field) {
-        return false;
+        return Session.get('gamePasswordErrors')[field];
+    },
+    errorClass: function(field) {
+        return !!Session.get('gamePasswordErrors')[field] ? 'has-error' : '';
     },
     showPasswordField: function() {
         return this.passwordProtected;
@@ -20,13 +24,20 @@ Template.gamePassword.events({
         Meteor.call(
             'joinGameRoom', roomId, password,
             function(err, result) {
-                if (err) return console.log(err.reason);
+                if (err) return Errors.throw(err.reason);
 
-                console.log(result);
-                if (result.success) {
+                if (result.alreadyInRoom) {
+                    Errors.throw('You\'re already in a room.');
+                } else if (result.isAtCapacity) {
+                    Errors.throw('Sorry, the room you\'re trying to join is full.');
+                } else if (result.wrongPassword) {
+                    Session.set('gamePasswordErrors', {password: 'Incorrect password.'});
+                } else if (result.success) {
                     Router.go('gameRoomPage', {
                         _id: roomId
                     });
+                } else {
+                    Errors.throw('An unknown error prevented you from joining this room.');
                 }
             }
         );
