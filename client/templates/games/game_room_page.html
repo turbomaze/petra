@@ -1,51 +1,55 @@
 <template name="gameRoomPage">
     <div class="game-room-page page shard">
-        <div class="row">
-            <div class="col-xs-6" style="height: 100%">
-                <h3>{{title}}</h3>
+        {{#if open}}
+            <div class="row">
+                <div class="col-xs-6" style="height: 100%">
+                    <h3>{{title}}</h3>
 
-                <div>
-                    <strong>Room password: </strong>
-                    {{#if password}}
-                        {{password}}
-                    {{else}}
-                        <i>none</i>
-                    {{/if}}
-                </div>
+                    <div>
+                        <strong>Room password: </strong>
+                        {{#if password}}
+                            {{password}}
+                        {{else}}
+                            <i>none</i>
+                        {{/if}}
+                    </div>
 
-                <div>
-                    <strong>Max # players: </strong>
-                    {{maxPlayers}}
+                    <div>
+                        <strong>Max # players: </strong>
+                        {{maxPlayers}}
+                    </div>
                 </div>
-            </div>
-            <div class="right-col col-xs-6">
-                <h3>Players</h3>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        {{author}}
-                        <span style="float: right" class="glyphicon glyphicon-king" aria-hidden="true"></span>
-                    </li>
-                    {{#each normalPlayers}}
+                <div class="right-col col-xs-6">
+                    <h3>Players</h3>
+                    <ul class="list-group">
                         <li class="list-group-item">
-                            {{username}}
+                            {{author}}
+                            <span style="float: right" class="glyphicon glyphicon-king" aria-hidden="true"></span>
                         </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
-        {{#if isRoomOwner}}
-            <div class="row" style="margin-top: 10px">
-                <div class="col-xs-8">
-                    <a href="#" style="width: 100%" class="btn btn-primary">
-                        Start game
-                    </a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="#" style="width: 100%" class="delete btn btn-primary">
-                        Delete room
-                    </a>
+                        {{#each normalPlayers}}
+                            <li class="list-group-item">
+                                {{username}}
+                            </li>
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
+            {{#if isRoomOwner}}
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-xs-8">
+                        <a href="#" style="width: 100%" class="start btn btn-primary">
+                            Start game
+                        </a>
+                    </div>
+                    <div class="col-xs-4">
+                        <a href="#" style="width: 100%" class="delete btn btn-primary">
+                            Delete room
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
+        {{else}}
+            {{> gameTemplate}}
         {{/if}}
     </div>
 

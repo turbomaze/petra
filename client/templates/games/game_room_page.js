@@ -17,10 +17,15 @@ Template.gameRoomPage.helpers({
 });
 
 Template.gameRoomPage.events({
+    'click .start': function(e, tmpl) {
+        e.preventDefault();
+
+        Meteor.call('startGame', this._id);
+    },
     'click .delete': function(e, tmpl) {
         e.preventDefault();
 
-        if (isRoomOwner(this)) {
+        if (isRoomOwner(this)) { //
             GameRooms.remove(this._id);
             Router.go('home');
         }

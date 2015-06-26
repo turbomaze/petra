@@ -28,6 +28,8 @@ Template.gamePassword.events({
 
                 if (result.alreadyInRoom) {
                     Errors.throw('You\'re already in a room.');
+                } else if (result.alreadyStarted) {
+                    Errors.throw('This game has already started.');
                 } else if (result.isAtCapacity) {
                     Errors.throw('Sorry, the room you\'re trying to join is full.');
                 } else if (result.wrongPassword) {
