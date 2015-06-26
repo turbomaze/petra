@@ -8,22 +8,24 @@ Template.gameRoomPage.helpers({
     },
     normalPlayers: function() {
         var ownerId = this.userId;
-        return this.players.filter(function(player) {
-            console.log('-------------------');
-            console.log(ownerId);
-            console.log(Meteor.userId());
-            console.log('-------------------');
+        var nonOwners = this.players.filter(function(player) {
             //as long as they're not the author
             return player._id !== ownerId;
         });
+        return nonOwners;
     }
 });
 
 Template.gameRoomPage.events({
+    'click .start': function(e, tmpl) {
+        e.preventDefault();
+
+        Meteor.call('startGame', this._id);
+    },
     'click .delete': function(e, tmpl) {
         e.preventDefault();
 
-        if (isRoomOwner(this)) {
+        if (isRoomOwner(this)) { //
             GameRooms.remove(this._id);
             Router.go('home');
         }
