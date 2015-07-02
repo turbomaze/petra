@@ -87,3 +87,17 @@ body {
     margin-bottom: 5px;
     pointer-events: auto;
 }
+
+.letter-grid {
+    width: 400px;
+    height: 400px;
+    margin: 0px auto;
+}
+
+.letter-grid .letter-elem {
+    width: 10%;
+    height: 10%;
+    float: left;
+    border: 1px solid #ccc;
+    text-align: center;
+}

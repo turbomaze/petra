@@ -1,3 +1,9 @@
 <template name="gameTemplate">
-    <p>This is the game template</p>
+    <div class="letter-grid">
+        {{#each cells}}
+            <div class="letter-elem" id="cell-{{_id}}">
+                {{letter}}
+            </div>
+        {{/each}}
+    </div>
 </template>

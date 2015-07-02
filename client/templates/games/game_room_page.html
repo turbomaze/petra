@@ -1,6 +1,6 @@
 <template name="gameRoomPage">
     <div class="game-room-page page shard">
-        {{#if open}}
+        {{#unless open}}
             <div class="row">
                 <div class="col-xs-6" style="height: 100%">
                     <h3>{{title}}</h3>
@@ -50,7 +50,7 @@
             {{/if}}
         {{else}}
             {{> gameTemplate}}
-        {{/if}}
+        {{/unless}}
     </div>
 
     <script>
