@@ -87,3 +87,39 @@ body {
     margin-bottom: 5px;
     pointer-events: auto;
 }
+
+.letter-grid {
+    width: 400px;
+    height: 400px;
+    margin: 0px auto;
+}
+
+.letter-grid .tile-elem {
+    width: 10%;
+    height: 10%;
+    float: left;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.letter-grid .tile-elem.selected {
+    background-color: #efefef;
+}
+
+.rack {
+    width: 400px;
+    height: 40px;
+    margin: 0px auto;
+}
+
+.rack .letter-elem {
+    width: 10%;
+    height: 100%;
+    float: left;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.rack .letter-elem.selected {
+    background-color: #efefef;
+}

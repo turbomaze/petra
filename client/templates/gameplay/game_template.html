@@ -1,3 +1,34 @@
 <template name="gameTemplate">
-    <p>This is the game template</p>
+    <div class="letter-grid">
+        {{#each gameData.tiles}}
+            {{#if equals selectedTile _id}}
+                <div class="tile-elem selected"
+                     id="tile-{{_id}}">
+                    {{letter}}
+                </div>
+            {{else}}
+                <div class="tile-elem" id="tile-{{_id}}">
+                    {{letter}}
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+
+    <hr>
+
+    <div class="rack">
+        {{#each gameData.rack}}
+            {{#if equals selectedRackLetter _id}}
+                <div class="letter-elem selected"
+                     id="rack-letter-{{_id}}">
+                    {{letter}}
+                </div>
+            {{else}}
+                <div class="letter-elem"
+                     id="rack-letter-{{_id}}">
+                    {{letter}}
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
 </template>
