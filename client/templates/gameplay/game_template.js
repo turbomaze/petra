@@ -50,5 +50,40 @@ Template.gameTemplate.events({
     'click .letter-elem': function(e, tmpl) {
         var letterId = parseInt(e.target.id.split('-')[2]);
         Session.set('selected-rack-letter', letterId);
+    },
+
+    'click #place-btn': function(e, tmpl) {
+        e.preventDefault();
+
+        Meteor.call(
+            'placeTile',
+            this._id,
+            Session.get('selected-tile'),
+            Session.get('selected-rack-letter'),
+            function(err, result) {
+                if (err) return Errors.throw(err.reason);
+
+                if (result.notInRoom) {
+                    return Errors.throw(
+                        'You\'re not in this game room.'
+                    );
+                } else if (result.invalidRackId) {
+                    return Errors.throw(
+                        'The rack item you\'ve selected '+
+                        'is invalid.'
+                    );
+                } else if (result.invalidTileId) {
+                    return Errors.throw(
+                        'The tile you\'ve selected is '+
+                        'invalid.'
+                    );
+                } else if (result.tileAlreadyFilled) {
+                    return Errors.throw(
+                        'There\'s already a letter in this '+
+                        'tile'
+                    );
+                }
+            }
+        );
     }
 });

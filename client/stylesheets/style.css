@@ -89,17 +89,20 @@ body {
 }
 
 .letter-grid {
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
     margin: 0px auto;
+    font-size: 16px;
+    line-height: 30px;
 }
 
 .letter-grid .tile-elem {
-    width: 10%;
-    height: 10%;
+    width: 6.66%;
+    height: 6.66%;
     float: left;
     border: 1px solid #ccc;
     text-align: center;
+    cursor: pointer;
 }
 
 .letter-grid .tile-elem.selected {
@@ -107,17 +110,20 @@ body {
 }
 
 .rack {
-    width: 400px;
-    height: 40px;
+    width: 450px;
+    height: 30px;
     margin: 0px auto;
+    font-size: 18px;
+    line-height: 30px;
 }
 
 .rack .letter-elem {
-    width: 10%;
+    width: 6.66%;
     height: 100%;
     float: left;
     border: 1px solid #ccc;
     text-align: center;
+    cursor: pointer;
 }
 
 .rack .letter-elem.selected {
