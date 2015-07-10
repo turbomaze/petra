@@ -45,11 +45,13 @@ var stage = []; //store piece placements here before sending to the server
 
 Template.gameTemplate.events({
     'click .tile-elem': function(e, tmpl) {
+        e.preventDefault();
         var tileId = parseInt(e.target.id.split('-')[1]);
         Session.set('selected-tile', tileId);
     },
 
     'click .letter-elem': function(e, tmpl) {
+        e.preventDefault();
         var letterId = parseInt(e.target.id.split('-')[2]);
         Session.set('selected-rack-letter', letterId);
     },
@@ -105,6 +107,8 @@ Template.gameTemplate.events({
     },
 
     'click #recall-btn': function(e, tmpl) {
+        e.preventDefault();
+
         //get the game data you need
         var gameData = GameRooms.findOne(this._id, {
             fields: {
@@ -130,5 +134,47 @@ Template.gameTemplate.events({
         GameRooms._collection.update(this._id, {
             $set: propsToUpdate
         });
+    },
+
+    'click #submit-move-btn': function(e, tmpl) {
+        e.preventDefault();
+
+        Meteor.call(
+            'makeMove',
+            this._id,
+            stage,
+            function(err, result) {
+                if (err) return Errors.throw(err.reason);
+
+                if (result.notInRoom) {
+                    return Errors.throw(
+                        'You\'re not in this game room.'
+                    );
+                } else if (result.notTheirTurn) {
+                    return Errors.throw(
+                        'It isn\'t your turn!'
+                    );
+                } else if (result.invalidRackId) {
+                    return Errors.throw(
+                        'One of the letters you\'ve selected is invalid.'
+                    );
+                } else if (result.invalidTileId) {
+                    return Errors.throw(
+                        'You can only place letters on empty tiles.'
+                    );
+                } else if (result.notALine) {
+                    return Errors.throw(
+                        'All of your letters need to be in a single line.'
+                    );
+                } else if (!!result.notAWord) {
+                    return Errors.throw(
+                        'The following words were invalid: '+
+                        result.notAWord.join(', ')
+                    );
+                } else if (result.success) {
+                    stage = []; //clear the stage; these changes will live on!
+                }
+            }
+        );
     }
 });
