@@ -1,7 +1,6 @@
 Template.gameTemplate.onCreated(function() {
     //reset session variables
     Session.set('selected-tile', false);
-    Session.set('selected-rack-letter', false);
 });
 
 Template.gameTemplate.helpers({
@@ -34,10 +33,6 @@ Template.gameTemplate.helpers({
 
     selectedTile: function() {
         return Session.get('selected-tile');
-    },
-
-    selectedRackLetter: function() {
-        return Session.get('selected-rack-letter');
     }
 });
 
@@ -52,8 +47,65 @@ Template.gameTemplate.events({
 
     'click .letter-elem': function(e, tmpl) {
         e.preventDefault();
-        var letterId = parseInt(e.target.id.split('-')[2]);
-        Session.set('selected-rack-letter', letterId);
+
+        var tileId = Session.get('selected-tile');
+        if (tileId === false) return Errors.throw('Select a tile first.');
+
+        //get the current room's data
+        var currRoom = Template.parentData(1)._id;
+        var gameData = GameRooms.findOne(currRoom, {
+            fields: {
+                playerRacks: 1,
+                tiles: 1
+            }
+        });
+
+        //bunch of convenience variables
+        var tiles = gameData.tiles;
+        var rack = gameData.playerRacks[Meteor.userId()];
+        var rackId = parseInt(e.target.id.split('-')[2]);
+        var rackLetter = rack[rackId].letter;
+        var tileLetter = tiles[tileId].letter;
+
+        //deal with the few different tile-rack cases
+        if (rackLetter !== false && tileLetter !== false) {
+            return Errors.throw('There\'s already a letter in that tile.');
+        } else if (rackLetter === false && tileLetter !== false) {
+            var stageChangeIdx = stage.reduce(function(ans, change, idx) {
+                return change[0] === tileId ? idx : ans;
+            }, false);
+            if (stageChangeIdx !== false) {
+                //it was a staged change so reclaim the letter
+                rack[rackId].letter = tiles[tileId].letter;
+                tiles[tileId].letter = false;
+                var propsToUpdate = {
+                    tiles: tiles
+                };
+                propsToUpdate['playerRacks.'+Meteor.userId()] = rack;
+                GameRooms._collection.update(currRoom, {
+                    $set: propsToUpdate
+                });
+
+                //remove this change from the stage
+                stage.splice(stageChangeIdx, 1);
+            } else { //otherwise tell them they can't reclaim it
+                return Errors.throw('That\'s not your letter to reclaim.');
+            }
+        } else if (rackLetter !== false && tileLetter === false) {
+            //update the LOCAL collection after placing the letter
+            tiles[tileId].letter = rack[rackId].letter;
+            rack[rackId].letter = false;
+            var propsToUpdate = {
+                tiles: tiles
+            };
+            propsToUpdate['playerRacks.'+Meteor.userId()] = rack;
+            GameRooms._collection.update(currRoom, {
+                $set: propsToUpdate
+            });
+
+            //remember your changes so you can undo them later
+            stage.push([tileId, rackId]);
+        }
     },
 
     'click #place-btn': function(e, tmpl) {
@@ -69,41 +121,8 @@ Template.gameTemplate.events({
         var tiles = gameData.tiles;
         var tileId = Session.get('selected-tile');
         var rack = gameData.playerRacks[Meteor.userId()];
-        var rackId = Session.get('selected-rack-letter');
 
-        //some basic error checking
-        if (tileId === false) {
-            return Errors.throw('You must select a tile.');
-        }
 
-        if (rackId === false) {
-            return Errors.throw('You must select a letter on your rack.');
-        }
-
-        if (!rack[rackId].letter) {
-            return Errors.throw('There\'s no letter in that rack slot.');
-        }
-
-        if (!!tiles[tileId].letter) {
-            return Errors.throw('There\'s already a letter there.');
-        }
-
-        //update the LOCAL collection with the changes
-        tiles[tileId].letter = rack[rackId].letter;
-        rack[rackId].letter = false;
-        var propsToUpdate = {
-            tiles: tiles
-        };
-        propsToUpdate['playerRacks.'+Meteor.userId()] = rack;
-        GameRooms._collection.update(this._id, {
-            $set: propsToUpdate
-        });
-
-        //remember your changes so you can undo them later
-        stage.push([
-            Session.get('selected-tile'),
-            Session.get('selected-rack-letter')
-        ]);
     },
 
     'click #recall-btn': function(e, tmpl) {
