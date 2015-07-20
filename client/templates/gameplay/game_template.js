@@ -108,23 +108,6 @@ Template.gameTemplate.events({
         }
     },
 
-    'click #place-btn': function(e, tmpl) {
-        e.preventDefault();
-
-        //get the game data you need
-        var gameData = GameRooms.findOne(this._id, {
-            fields: {
-                playerRacks: 1,
-                tiles: 1
-            }
-        });
-        var tiles = gameData.tiles;
-        var tileId = Session.get('selected-tile');
-        var rack = gameData.playerRacks[Meteor.userId()];
-
-
-    },
-
     'click #recall-btn': function(e, tmpl) {
         e.preventDefault();
 
@@ -184,6 +167,10 @@ Template.gameTemplate.events({
                 } else if (result.notALine) {
                     return Errors.throw(
                         'All of your letters need to be in a single line.'
+                    );
+                } else if (result.notConnected) {
+                    return Errors.throw(
+                        'All of your letters need to be connected.'
                     );
                 } else if (!!result.notAWord) {
                     return Errors.throw(
