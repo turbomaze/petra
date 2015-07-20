@@ -18,17 +18,15 @@
 
     <div class="rack">
         {{#each gameData.rack}}
-            {{#if equals selectedRackLetter _id}}
-                <div class="letter-elem selected"
-                     id="rack-letter-{{_id}}">
-                    {{letter}}
-                </div>
-            {{else}}
-                <div class="letter-elem"
-                     id="rack-letter-{{_id}}">
-                    {{letter}}
-                </div>
-            {{/if}}
+            <div class="letter-elem"
+                 id="rack-letter-{{_id}}">
+                {{letter}}
+            </div>
         {{/each}}
+
+        <input type="button" id="recall-btn"
+               value="Recall">
+        <input type="button" id="submit-move-btn"
+               value="Submit move">
     </div>
 </template>
