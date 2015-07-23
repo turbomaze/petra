@@ -93,7 +93,8 @@ Template.gameTemplate.events({
             }
         } else if (rackLetter !== false && tileLetter === false) {
             //update the LOCAL collection after placing the letter
-            tiles[tileId].letter = rack[rackId].letter;
+            var letter = rack[rackId].letter;
+            tiles[tileId].letter = letter;
             rack[rackId].letter = false;
             var propsToUpdate = {
                 tiles: tiles
@@ -104,7 +105,7 @@ Template.gameTemplate.events({
             });
 
             //remember your changes so you can undo them later
-            stage.push([tileId, rackId]);
+            stage.push([tileId, letter]);
         }
     },
 
@@ -112,7 +113,7 @@ Template.gameTemplate.events({
         e.preventDefault();
 
         //get the game data you need
-        var gameData = GameRooms.findOne(this._id, {
+        var gameData = GameRooms._collection.findOne(this._id, {
             fields: {
                 playerRacks: 1,
                 tiles: 1
@@ -122,10 +123,14 @@ Template.gameTemplate.events({
         var rack = gameData.playerRacks[Meteor.userId()];
 
         //undo all the staged changes
-        stage.map(function(placement) {
-            rack[placement[1]].letter = tiles[placement[0]].letter;
-            tiles[placement[0]].letter = false;
-        });
+        var stageIdx = 0;
+        for (var ri = 0; ri < rack.length && stageIdx < stage.length; ri++) {
+            if (rack[ri].letter === false) {
+                rack[ri].letter = stage[stageIdx][1];
+                tiles[stage[stageIdx][0]].letter = false;
+                stageIdx++;
+            }
+        }
         stage = [];
 
         //send the undone version back to the minimongo collection
