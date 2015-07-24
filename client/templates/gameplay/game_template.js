@@ -169,6 +169,14 @@ Template.gameTemplate.events({
                     return Errors.throw(
                         'You can only place letters on empty tiles.'
                     );
+                } else if (result.mustPlaceCenter) {
+                    return Errors.throw(
+                        'The first word has to go through the center.'
+                    );
+                } else if (result.doesNotBranch) {
+                    return Errors.throw(
+                        'New words need to branch off of old words.'
+                    );
                 } else if (result.notALine) {
                     return Errors.throw(
                         'All of your letters need to be in a single line.'
