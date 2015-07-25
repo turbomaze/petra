@@ -4,20 +4,6 @@ Template.gameTemplate.onCreated(function() {
 });
 
 Template.gameTemplate.helpers({
-    cells: function() {
-        var idxs = [];
-        for (var ai = 0; ai < 100; ai++) {
-            idxs.push({
-                _id: ai,
-                letter: Math.random() < 0.4 ? '' :
-                    String.fromCharCode(
-                        65+Math.floor(26*Math.random())
-                    )
-            });
-        }
-        return idxs;
-    },
-
     gameData: function() {
         var rawData = GameRooms.findOne(this._id, {
             fields: {
@@ -25,21 +11,43 @@ Template.gameTemplate.helpers({
                 tiles: 1
             }
         });
+        for (var ti = 0; ti < rawData.tiles.length; ti++) {
+            if (!!rawData.tiles[ti].letter) {
+                rawData.tiles[ti].filledClass = !!rawData.tiles[ti].userId ?
+                    'filled' : 'with-letter';
+            }
+            if (ti === Session.get('selected-tile')) {
+                rawData.tiles[ti].selectedClass = 'selected';
+            }
+
+            if (ti === 112) {
+                rawData.tiles[ti].multClass = 'center';
+                rawData.tiles[ti].multText = '&#9733;';
+            } else if (rawData.tiles[ti].mult === 2) {
+                rawData.tiles[ti].multClass = 'mult-dl';
+                rawData.tiles[ti].multText = 'DL';
+            } else if (rawData.tiles[ti].mult === 3) {
+                rawData.tiles[ti].multClass = 'mult-tl';
+                rawData.tiles[ti].multText = 'TL';
+            } else if (rawData.tiles[ti].mult === 12) {
+                rawData.tiles[ti].multClass = 'mult-dw';
+                rawData.tiles[ti].multText = 'DW';
+            } else if (rawData.tiles[ti].mult === 13) {
+                rawData.tiles[ti].multClass = 'mult-tw';
+                rawData.tiles[ti].multText = 'TW';
+            }
+        }
         return {
             tiles: rawData.tiles,
             rack: rawData.playerRacks[Meteor.userId()]
         };
-    },
-
-    selectedTile: function() {
-        return Session.get('selected-tile');
     }
 });
 
 var stage = []; //store piece placements here before sending to the server
 
 Template.gameTemplate.events({
-    'click .tile-elem': function(e, tmpl) {
+    'click .tile-elem, click .tile-letter': function(e, tmpl) {
         e.preventDefault();
         var tileId = parseInt(e.target.id.split('-')[1]);
         Session.set('selected-tile', tileId);
