@@ -53,7 +53,7 @@ Template.gameTemplate.events({
         Session.set('selected-tile', tileId);
     },
 
-    'click .letter-elem': function(e, tmpl) {
+    'click .rack-letter': function(e, tmpl) {
         e.preventDefault();
 
         var tileId = Session.get('selected-tile');
@@ -85,7 +85,9 @@ Template.gameTemplate.events({
             if (stageChangeIdx !== false) {
                 //it was a staged change so reclaim the letter
                 rack[rackId].letter = tiles[tileId].letter;
+                rack[rackId].score = tiles[tileId].score;
                 tiles[tileId].letter = false;
+                tiles[tileId].score = false;
                 var propsToUpdate = {
                     tiles: tiles
                 };
@@ -103,7 +105,9 @@ Template.gameTemplate.events({
             //update the LOCAL collection after placing the letter
             var letter = rack[rackId].letter;
             tiles[tileId].letter = letter;
+            tiles[tileId].score = rack[rackId].score;
             rack[rackId].letter = false;
+            rack[rackId].score = false;
             var propsToUpdate = {
                 tiles: tiles
             };
@@ -135,7 +139,9 @@ Template.gameTemplate.events({
         for (var ri = 0; ri < rack.length && stageIdx < stage.length; ri++) {
             if (rack[ri].letter === false) {
                 rack[ri].letter = stage[stageIdx][1];
+                rack[ri].score = LETTER_PTS[rack[ri].letter];
                 tiles[stage[stageIdx][0]].letter = false;
+                tiles[stage[stageIdx][0]].score = false;
                 stageIdx++;
             }
         }

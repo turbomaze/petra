@@ -109,9 +109,10 @@ body {
     border-radius: 3px;
     cursor: pointer;
     position: relative;
+    text-transform: uppercase;
 }
 
-.letter-grid .tile-elem-container .tile-elem {
+.tile-elem-container .tile-elem {
     position: absolute;
     top: 0;
     right: 0;
@@ -119,6 +120,7 @@ body {
     left: 0;
     overflow: hidden;
     font-family: Arial, sans-serif;
+    font-size: 15px;
     color: white;
     font-weight: bold;
     border-radius: 3px;
@@ -126,7 +128,7 @@ body {
     z-index: 0;
 }
 
-.letter-grid .tile-elem-container .tile-letter {
+.tile-elem-container .tile-letter {
     position: absolute;
     top: 0;
     right: 0;
@@ -135,50 +137,63 @@ body {
     overflow: hidden;
     border-radius: 3px;
     font-weight: bold;
+    font-size: 18px;
     z-index: 1;
 }
 
-.letter-grid .tile-elem-container .tile-elem.center {
+.tile-elem-container .tile-score {
+    position: absolute;
+    right: 2px;
+    bottom: 1px;
+    font-size: 11px;
+    line-height: 11px;
+    overflow: hidden;
+    border-radius: 3px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.tile-elem-container .tile-elem.center {
     background-color: #9f0000;
     border: 1px solid #9d0000;
 }
 
-.letter-grid .tile-elem-container .tile-elem.mult-dl {
+.tile-elem-container .tile-elem.mult-dl {
     background-color: #1890F2;
     border: 1px solid #0673CC;
 }
 
-.letter-grid .tile-elem-container .tile-elem.mult-tl {
+.tile-elem-container .tile-elem.mult-tl {
     background-color: #00DB4C;
     border: 1px solid #06BA44;
 }
 
-.letter-grid .tile-elem-container .tile-elem.mult-dw {
+.tile-elem-container .tile-elem.mult-dw {
     background-color: #FA2D41;
     border: 1px solid #E32235;
 }
 
-.letter-grid .tile-elem-container .tile-elem.mult-tw {
+.tile-elem-container .tile-elem.mult-tw {
     background-color: #FFC517;
     border: 1px solid #DEAB14;
 }
 
-.letter-grid .tile-elem-container .tile-letter.with-letter {
+.tile-elem-container .tile-letter.with-letter {
     background: rgba(255,255,255,0.84);
     border: 1px solid #DCDCDC;
 }
 
-.letter-grid .tile-elem-container .tile-letter.filled {
+.tile-elem-container .tile-letter.filled {
     background-color: rgba(243, 245, 65, 0.92);
     border: 1px solid #dfd439;
 }
 
-.letter-grid .tile-elem-container .tile-letter.selected {
+.tile-elem-container .tile-letter.selected {
     background-color: rgba(228,228,228,0.85);
     border: 1px solid #bababa;
 }
 
-.letter-grid .tile-elem-container .tile-letter.filled.selected {
+.tile-elem-container .tile-letter.filled.selected {
     background-color: rgba(210, 207, 4, 0.9);
     border: 1px solid #8b8c1d;
 }
@@ -192,15 +207,27 @@ body {
     line-height: 30px;
 }
 
-.rack .letter-elem {
+.rack .tile-elem-container {
     width: 6.66%;
     height: 100%;
     float: left;
-    border: 1px solid #ccc;
     text-align: center;
+    border-radius: 3px;
     cursor: pointer;
+    position: relative;
+    text-transform: uppercase;
 }
 
-.rack .letter-elem.selected {
-    background-color: #efefef;
+.rack .tile-elem-container .rack-letter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 18px;
+    z-index: 1;
+    border: 1px solid #DCDCDC;
 }

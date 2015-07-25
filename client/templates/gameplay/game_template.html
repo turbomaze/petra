@@ -9,6 +9,11 @@
                      {{selectedClass}}" id="letter-{{_id}}">
                     {{letter}}
                 </div>
+                {{#if letter}}
+                    <div class="tile-score">
+                        {{score}}
+                    </div>
+                {{/if}}
             </div>
         {{/each}}
     </div>
@@ -17,9 +22,15 @@
 
     <div class="rack">
         {{#each gameData.rack}}
-            <div class="letter-elem"
-                 id="rack-letter-{{_id}}">
-                {{letter}}
+            <div class="tile-elem-container">
+                <div class="rack-letter" id="rack-letter-{{_id}}">
+                    {{letter}}
+                </div>
+                {{#if letter}}
+                    <div class="tile-score">
+                        {{score}}
+                    </div>
+                {{/if}}
             </div>
         {{/each}}
 
