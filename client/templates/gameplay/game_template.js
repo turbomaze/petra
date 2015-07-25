@@ -4,20 +4,6 @@ Template.gameTemplate.onCreated(function() {
 });
 
 Template.gameTemplate.helpers({
-    cells: function() {
-        var idxs = [];
-        for (var ai = 0; ai < 100; ai++) {
-            idxs.push({
-                _id: ai,
-                letter: Math.random() < 0.4 ? '' :
-                    String.fromCharCode(
-                        65+Math.floor(26*Math.random())
-                    )
-            });
-        }
-        return idxs;
-    },
-
     gameData: function() {
         var rawData = GameRooms.findOne(this._id, {
             fields: {
@@ -25,27 +11,49 @@ Template.gameTemplate.helpers({
                 tiles: 1
             }
         });
+        for (var ti = 0; ti < rawData.tiles.length; ti++) {
+            if (!!rawData.tiles[ti].letter) {
+                rawData.tiles[ti].filledClass = !!rawData.tiles[ti].userId ?
+                    'filled' : 'with-letter';
+            }
+            if (ti === Session.get('selected-tile')) {
+                rawData.tiles[ti].selectedClass = 'selected';
+            }
+
+            if (ti === 112) {
+                rawData.tiles[ti].multClass = 'center';
+                rawData.tiles[ti].multText = '&#9733;';
+            } else if (rawData.tiles[ti].mult === 2) {
+                rawData.tiles[ti].multClass = 'mult-dl';
+                rawData.tiles[ti].multText = 'DL';
+            } else if (rawData.tiles[ti].mult === 3) {
+                rawData.tiles[ti].multClass = 'mult-tl';
+                rawData.tiles[ti].multText = 'TL';
+            } else if (rawData.tiles[ti].mult === 12) {
+                rawData.tiles[ti].multClass = 'mult-dw';
+                rawData.tiles[ti].multText = 'DW';
+            } else if (rawData.tiles[ti].mult === 13) {
+                rawData.tiles[ti].multClass = 'mult-tw';
+                rawData.tiles[ti].multText = 'TW';
+            }
+        }
         return {
             tiles: rawData.tiles,
             rack: rawData.playerRacks[Meteor.userId()]
         };
-    },
-
-    selectedTile: function() {
-        return Session.get('selected-tile');
     }
 });
 
 var stage = []; //store piece placements here before sending to the server
 
 Template.gameTemplate.events({
-    'click .tile-elem': function(e, tmpl) {
+    'click .tile-elem, click .tile-letter': function(e, tmpl) {
         e.preventDefault();
         var tileId = parseInt(e.target.id.split('-')[1]);
         Session.set('selected-tile', tileId);
     },
 
-    'click .letter-elem': function(e, tmpl) {
+    'click .rack-letter': function(e, tmpl) {
         e.preventDefault();
 
         var tileId = Session.get('selected-tile');
@@ -77,7 +85,9 @@ Template.gameTemplate.events({
             if (stageChangeIdx !== false) {
                 //it was a staged change so reclaim the letter
                 rack[rackId].letter = tiles[tileId].letter;
+                rack[rackId].score = tiles[tileId].score;
                 tiles[tileId].letter = false;
+                tiles[tileId].score = false;
                 var propsToUpdate = {
                     tiles: tiles
                 };
@@ -93,8 +103,11 @@ Template.gameTemplate.events({
             }
         } else if (rackLetter !== false && tileLetter === false) {
             //update the LOCAL collection after placing the letter
-            tiles[tileId].letter = rack[rackId].letter;
+            var letter = rack[rackId].letter;
+            tiles[tileId].letter = letter;
+            tiles[tileId].score = rack[rackId].score;
             rack[rackId].letter = false;
+            rack[rackId].score = false;
             var propsToUpdate = {
                 tiles: tiles
             };
@@ -104,7 +117,7 @@ Template.gameTemplate.events({
             });
 
             //remember your changes so you can undo them later
-            stage.push([tileId, rackId]);
+            stage.push([tileId, letter]);
         }
     },
 
@@ -112,7 +125,7 @@ Template.gameTemplate.events({
         e.preventDefault();
 
         //get the game data you need
-        var gameData = GameRooms.findOne(this._id, {
+        var gameData = GameRooms._collection.findOne(this._id, {
             fields: {
                 playerRacks: 1,
                 tiles: 1
@@ -122,10 +135,16 @@ Template.gameTemplate.events({
         var rack = gameData.playerRacks[Meteor.userId()];
 
         //undo all the staged changes
-        stage.map(function(placement) {
-            rack[placement[1]].letter = tiles[placement[0]].letter;
-            tiles[placement[0]].letter = false;
-        });
+        var stageIdx = 0;
+        for (var ri = 0; ri < rack.length && stageIdx < stage.length; ri++) {
+            if (rack[ri].letter === false) {
+                rack[ri].letter = stage[stageIdx][1];
+                rack[ri].score = LETTER_PTS[rack[ri].letter];
+                tiles[stage[stageIdx][0]].letter = false;
+                tiles[stage[stageIdx][0]].score = false;
+                stageIdx++;
+            }
+        }
         stage = [];
 
         //send the undone version back to the minimongo collection
@@ -163,6 +182,14 @@ Template.gameTemplate.events({
                 } else if (result.invalidTileId) {
                     return Errors.throw(
                         'You can only place letters on empty tiles.'
+                    );
+                } else if (result.mustPlaceCenter) {
+                    return Errors.throw(
+                        'The first word has to go through the center.'
+                    );
+                } else if (result.doesNotBranch) {
+                    return Errors.throw(
+                        'New words need to branch off of old words.'
                     );
                 } else if (result.notALine) {
                     return Errors.throw(
