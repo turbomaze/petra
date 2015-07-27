@@ -179,12 +179,12 @@ body {
 }
 
 .tile-elem-container .tile-letter.with-letter {
-    background: rgba(255,255,255,0.84);
+    background: rgba(255,255,255,0.82);
     border: 1px solid #DCDCDC;
 }
 
 .tile-elem-container .tile-letter.filled {
-    background-color: rgba(243, 245, 65, 0.92);
+    background-color: rgba(243, 245, 65, 0.85);
     border: 1px solid #dfd439;
 }
 
@@ -230,4 +230,9 @@ body {
     font-size: 18px;
     z-index: 1;
     border: 1px solid #DCDCDC;
+}
+
+.my-score {
+    text-align: center;
+    font-size: 18px;
 }

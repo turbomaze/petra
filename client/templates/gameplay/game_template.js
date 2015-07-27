@@ -41,6 +41,15 @@ Template.gameTemplate.helpers({
             tiles: rawData.tiles,
             rack: rawData.playerRacks[Meteor.userId()]
         };
+    },
+
+    myScore: function() {
+        var rawData = GameRooms.findOne(this._id, {
+            fields: {
+                playerScores: 1
+            }
+        });
+        return rawData.playerScores[Meteor.userId()];
     }
 });
 
