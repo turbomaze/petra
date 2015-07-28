@@ -43,13 +43,32 @@ Template.gameTemplate.helpers({
         };
     },
 
-    myScore: function() {
+    playersAndScores: function() {
         var rawData = GameRooms.findOne(this._id, {
             fields: {
-                playerScores: 1
+                players: 1, //array of {ids,usernames}
+                playerScores: 1 //object of ids -> scores
             }
         });
-        return rawData.playerScores[Meteor.userId()];
+
+        var playerList = [];
+        var idxOfThisUser = rawData.players.map(function(user) {
+            return user._id;
+        }).indexOf(Meteor.userId());
+        playerList.push({
+            username: rawData.players[idxOfThisUser].username,
+            score: rawData.playerScores[Meteor.userId()]
+        });
+        for (var pi = 0; pi < rawData.players.length; pi++) {
+            var playersId = rawData.players[pi]._id;
+            if (playersId !== Meteor.userId()) {
+                playerList.push({
+                    username: rawData.players[pi].username,
+                    score: rawData.playerScores[playersId]
+                });
+            }
+        }
+        return playerList;
     }
 });
 
