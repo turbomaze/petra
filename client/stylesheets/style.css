@@ -232,7 +232,6 @@ body {
     border: 1px solid #DCDCDC;
 }
 
-.my-score {
-    text-align: center;
-    font-size: 18px;
+.is-turn {
+    background: #f7fc50;
 }

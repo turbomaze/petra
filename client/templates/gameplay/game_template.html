@@ -2,7 +2,7 @@
     <div class="room-players">
         <ul class="list-group">
             {{#each playersAndScores}}
-                <li class="list-group-item">
+                <li class="list-group-item {{isTurn}}">
                     {{username}}: {{score}} points
                 </li>
             {{/each}}

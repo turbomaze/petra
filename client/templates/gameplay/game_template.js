@@ -47,7 +47,8 @@ Template.gameTemplate.helpers({
         var rawData = GameRooms.findOne(this._id, {
             fields: {
                 players: 1, //array of {ids,usernames}
-                playerScores: 1 //object of ids -> scores
+                playerScores: 1, //object of ids -> scores
+                turn: 1
             }
         });
 
@@ -57,14 +58,16 @@ Template.gameTemplate.helpers({
         }).indexOf(Meteor.userId());
         playerList.push({
             username: rawData.players[idxOfThisUser].username,
-            score: rawData.playerScores[Meteor.userId()]
+            score: rawData.playerScores[Meteor.userId()],
+            isTurn: rawData.turn === Meteor.userId() ? 'is-turn':''
         });
         for (var pi = 0; pi < rawData.players.length; pi++) {
             var playersId = rawData.players[pi]._id;
             if (playersId !== Meteor.userId()) {
                 playerList.push({
                     username: rawData.players[pi].username,
-                    score: rawData.playerScores[playersId]
+                    score: rawData.playerScores[playersId],
+                    isTurn: rawData.turn === playersId ? 'is-turn':''
                 });
             }
         }
@@ -92,9 +95,15 @@ Template.gameTemplate.events({
         var gameData = GameRooms.findOne(currRoom, {
             fields: {
                 playerRacks: 1,
-                tiles: 1
+                tiles: 1,
+                turn: 1
             }
         });
+
+        //can only place on their turn
+        if (gameData.turn !== Meteor.userId()) {
+            return Errors.throw('It isn\'t your turn!');
+        }
 
         //bunch of convenience variables
         var tiles = gameData.tiles;
