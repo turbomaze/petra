@@ -248,5 +248,30 @@ Template.gameTemplate.events({
                 }
             }
         );
+    },
+
+    'click #pass-move-btn': function(e, tmpl) {
+        e.preventDefault();
+
+        Meteor.call(
+            'makeMove',
+            this._id,
+            [false],
+            function(err, result) {
+                if (err) return Errors.throw(err.reason);
+
+                if (result.notInRoom) {
+                    return Errors.throw(
+                        'You\'re not in this game room.'
+                    );
+                } else if (result.notTheirTurn) {
+                    return Errors.throw(
+                        'It isn\'t your turn!'
+                    );
+                } else {
+                    //do nothing, all good
+                }
+            }
+        );
     }
 });
