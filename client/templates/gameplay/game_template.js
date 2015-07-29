@@ -8,14 +8,28 @@ Template.gameTemplate.helpers({
         var rawData = GameRooms.findOne(this._id, {
             fields: {
                 playerRacks: 1,
-                tiles: 1
+                tiles: 1,
+                title: 1
             }
         });
+        var placedTileIds = stage.map(function(placement) {
+            return placement[0];
+        });
+        var tileIdsToRemove = [];
         for (var ti = 0; ti < rawData.tiles.length; ti++) {
             if (!!rawData.tiles[ti].letter) {
-                rawData.tiles[ti].filledClass = !!rawData.tiles[ti].userId ?
-                    'filled' : 'with-letter';
+                if (!!rawData.tiles[ti].userId) {
+                    rawData.tiles[ti].filledClass = 'filled';
+                    //an actual letter is here
+                    if (placedTileIds.indexOf(ti) !== -1) { //and so is a staged letter
+                        console.log('found a conflict!');
+                        tileIdsToRemove.push(ti);
+                    }
+                } else {
+                    rawData.tiles[ti].filledClass = 'with-letter';
+                }
             }
+
             if (ti === Session.get('selected-tile')) {
                 rawData.tiles[ti].selectedClass = 'selected';
             }
@@ -37,10 +51,35 @@ Template.gameTemplate.helpers({
                 rawData.tiles[ti].multText = 'TW';
             }
         }
+
+        stage = stage.filter(function(placement) {
+            return tileIdsToRemove.indexOf(placement[0]) === -1;
+        });
         return {
             tiles: rawData.tiles,
-            rack: rawData.playerRacks[Meteor.userId()]
+            rack: rawData.playerRacks[Meteor.userId()],
+            title: rawData.title || 'Game board'
         };
+    },
+
+    playersAndScores: function() {
+        var rawData = GameRooms.findOne(this._id, {
+            fields: {
+                players: 1, //array of {ids,usernames}
+                playerScores: 1, //object of ids -> scores
+                turn: 1
+            }
+        });
+        var playerList = [];
+        for (var pi = 0; pi < rawData.players.length; pi++) {
+            var playersId = rawData.players[pi]._id;
+            playerList.push({
+                username: rawData.players[pi].username,
+                score: rawData.playerScores[playersId],
+                isTurn: rawData.turn === playersId ? 'is-turn':''
+            });
+        }
+        return playerList;
     }
 });
 
@@ -64,9 +103,15 @@ Template.gameTemplate.events({
         var gameData = GameRooms.findOne(currRoom, {
             fields: {
                 playerRacks: 1,
-                tiles: 1
+                tiles: 1,
+                turn: 1
             }
         });
+
+        //can only place on their turn
+        if (gameData.turn !== Meteor.userId()) {
+            return Errors.throw('It isn\'t your turn!');
+        }
 
         //bunch of convenience variables
         var tiles = gameData.tiles;
@@ -206,6 +251,31 @@ Template.gameTemplate.events({
                     );
                 } else if (result.success) {
                     stage = []; //clear the stage; these changes will live on!
+                }
+            }
+        );
+    },
+
+    'click #pass-move-btn': function(e, tmpl) {
+        e.preventDefault();
+
+        Meteor.call(
+            'makeMove',
+            this._id,
+            [false],
+            function(err, result) {
+                if (err) return Errors.throw(err.reason);
+
+                if (result.notInRoom) {
+                    return Errors.throw(
+                        'You\'re not in this game room.'
+                    );
+                } else if (result.notTheirTurn) {
+                    return Errors.throw(
+                        'It isn\'t your turn!'
+                    );
+                } else {
+                    //do nothing, all good
                 }
             }
         );

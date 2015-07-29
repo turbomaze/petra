@@ -25,6 +25,12 @@ Template.gameRoomForm.events({
         Meteor.call('addGameRoom', gameRoom, function(err, result) {
             if (err) return console.log(err);
 
+            if (result.alreadyInRoom) {
+                return Errors.throw(
+                    'You\'re already in a game room.'
+                );
+            }
+
             Router.go('gameRoomPage', result);
         });
     }

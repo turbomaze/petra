@@ -88,6 +88,14 @@ body {
     pointer-events: auto;
 }
 
+.game-container {
+    margin-bottom: 2em;
+}
+
+.room-title {
+    text-align: center;
+}
+
 .letter-grid {
     width: 450px;
     height: 450px;
@@ -179,12 +187,12 @@ body {
 }
 
 .tile-elem-container .tile-letter.with-letter {
-    background: rgba(255,255,255,0.84);
+    background: rgba(255,255,255,0.82);
     border: 1px solid #DCDCDC;
 }
 
 .tile-elem-container .tile-letter.filled {
-    background-color: rgba(243, 245, 65, 0.92);
+    background-color: rgba(243, 245, 65, 0.85);
     border: 1px solid #dfd439;
 }
 
@@ -200,15 +208,15 @@ body {
 
 
 .rack {
-    width: 450px;
+    width: 210px;
     height: 30px;
-    margin: 0px auto;
+    margin: 0px;
     font-size: 18px;
     line-height: 30px;
 }
 
 .rack .tile-elem-container {
-    width: 6.66%;
+    width: 14.28%;
     height: 100%;
     float: left;
     text-align: center;
@@ -230,4 +238,12 @@ body {
     font-size: 18px;
     z-index: 1;
     border: 1px solid #DCDCDC;
+}
+
+.is-turn {
+    background: #f7fc50;
+}
+
+.game-btns a {
+    margin-top: 0.5em;
 }

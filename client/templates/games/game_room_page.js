@@ -1,7 +1,3 @@
-var isRoomOwner = function(gameRoom) {
-    return Meteor.userId() && Meteor.userId() === gameRoom.userId;
-};
-
 Template.gameRoomPage.helpers({
     isRoomOwner: function() {
         return isRoomOwner(this);
@@ -25,9 +21,16 @@ Template.gameRoomPage.events({
     'click .delete': function(e, tmpl) {
         e.preventDefault();
 
-        if (isRoomOwner(this)) { //
-            GameRooms.remove(this._id);
-            Router.go('home');
-        }
+        Meteor.call('deleteGameRoom', this._id, function(err, result) {
+            if (err) return Errors.throw(err.reason);
+
+            if (result.notRoomOwner) {
+                return Errors.throw(
+                    'Only the room owner can delete this room.'
+                );
+            } else if (result.success) {
+                Router.go('home');
+            }
+        });
     }
 });
