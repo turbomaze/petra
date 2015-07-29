@@ -12,11 +12,24 @@ Template.gameTemplate.helpers({
                 title: 1
             }
         });
+        var placedTileIds = stage.map(function(placement) {
+            return placement[0];
+        });
+        var tileIdsToRemove = [];
         for (var ti = 0; ti < rawData.tiles.length; ti++) {
             if (!!rawData.tiles[ti].letter) {
-                rawData.tiles[ti].filledClass = !!rawData.tiles[ti].userId ?
-                    'filled' : 'with-letter';
+                if (!!rawData.tiles[ti].userId) {
+                    rawData.tiles[ti].filledClass = 'filled';
+                    //an actual letter is here
+                    if (placedTileIds.indexOf(ti) !== -1) { //and so is a staged letter
+                        console.log('found a conflict!');
+                        tileIdsToRemove.push(ti);
+                    }
+                } else {
+                    rawData.tiles[ti].filledClass = 'with-letter';
+                }
             }
+
             if (ti === Session.get('selected-tile')) {
                 rawData.tiles[ti].selectedClass = 'selected';
             }
@@ -38,6 +51,10 @@ Template.gameTemplate.helpers({
                 rawData.tiles[ti].multText = 'TW';
             }
         }
+
+        stage = stage.filter(function(placement) {
+            return tileIdsToRemove.indexOf(placement[0]) === -1;
+        });
         return {
             tiles: rawData.tiles,
             rack: rawData.playerRacks[Meteor.userId()],
