@@ -46,11 +46,5 @@ Template.gameRoom.events({
                 }
             );
         }
-    },
-
-    'click .start': function(e, tmpl) {
-        e.preventDefault();
-
-        //hello
     }
 });
