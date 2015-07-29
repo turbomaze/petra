@@ -26,7 +26,9 @@ Template.gamePassword.events({
             function(err, result) {
                 if (err) return Errors.throw(err.reason);
 
-                if (result.alreadyInRoom) {
+                if (result.notLoggedOn) {
+                    Errors.throw('You\'re not logged on.');
+                } else if (result.alreadyInRoom) {
                     Errors.throw('You\'re already in a room.');
                 } else if (result.alreadyStarted) {
                     Errors.throw('This game has already started.');

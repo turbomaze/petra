@@ -70,25 +70,14 @@ Template.gameTemplate.helpers({
                 turn: 1
             }
         });
-
         var playerList = [];
-        var idxOfThisUser = rawData.players.map(function(user) {
-            return user._id;
-        }).indexOf(Meteor.userId());
-        playerList.push({
-            username: rawData.players[idxOfThisUser].username,
-            score: rawData.playerScores[Meteor.userId()],
-            isTurn: rawData.turn === Meteor.userId() ? 'is-turn':''
-        });
         for (var pi = 0; pi < rawData.players.length; pi++) {
             var playersId = rawData.players[pi]._id;
-            if (playersId !== Meteor.userId()) {
-                playerList.push({
-                    username: rawData.players[pi].username,
-                    score: rawData.playerScores[playersId],
-                    isTurn: rawData.turn === playersId ? 'is-turn':''
-                });
-            }
+            playerList.push({
+                username: rawData.players[pi].username,
+                score: rawData.playerScores[playersId],
+                isTurn: rawData.turn === playersId ? 'is-turn':''
+            });
         }
         return playerList;
     }

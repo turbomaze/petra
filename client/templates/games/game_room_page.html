@@ -55,7 +55,7 @@
 
     <script>
     window.addEventListener('beforeunload', function() {
-        Meteor.call('removeJoinAuth');
+        Meteor.call('leaveRoom');
     });
     </script>
 </template>
