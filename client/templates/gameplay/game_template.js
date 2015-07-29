@@ -259,25 +259,49 @@ Template.gameTemplate.events({
     'click #pass-move-btn': function(e, tmpl) {
         e.preventDefault();
 
-        Meteor.call(
-            'makeMove',
-            this._id,
-            [false],
-            function(err, result) {
+        if (confirm('Are you sure you want to pass your turn?')) {
+            Meteor.call(
+                'makeMove',
+                this._id,
+                [false],
+                function (err, result) {
+                    if (err) return Errors.throw(err.reason);
+
+                    if (result.notInRoom) {
+                        return Errors.throw(
+                            'You\'re not in this game room.'
+                        );
+                    } else if (result.notTheirTurn) {
+                        return Errors.throw(
+                            'It isn\'t your turn!'
+                        );
+                    } else {
+                        //do nothing, all good
+                    }
+                }
+            );
+        }
+    },
+
+    'click #forfeit-btn': function(e, tmpl) {
+        e.preventDefault();
+
+        if (confirm('Are you sure you want to forfeit?')) {
+            Meteor.call('removeJoinAuth', function (err, result) {
                 if (err) return Errors.throw(err.reason);
 
-                if (result.notInRoom) {
+                if (result.notLoggedOn) {
                     return Errors.throw(
-                        'You\'re not in this game room.'
+                        'You\'re not logged in.'
                     );
-                } else if (result.notTheirTurn) {
+                } else if (result.notInRoom) {
                     return Errors.throw(
-                        'It isn\'t your turn!'
+                        'You need to be in a room to forfeit.'
                     );
-                } else {
-                    //do nothing, all good
+                } else if (result.success) {
+                    Router.go('home');
                 }
-            }
-        );
+            });
+        }
     }
 });
