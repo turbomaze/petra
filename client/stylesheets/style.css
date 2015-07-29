@@ -88,6 +88,14 @@ body {
     pointer-events: auto;
 }
 
+.game-container {
+    margin-bottom: 2em;
+}
+
+.room-title {
+    text-align: center;
+}
+
 .letter-grid {
     width: 450px;
     height: 450px;
@@ -200,15 +208,15 @@ body {
 
 
 .rack {
-    width: 450px;
+    width: 210px;
     height: 30px;
-    margin: 0px auto;
+    margin: 0px;
     font-size: 18px;
     line-height: 30px;
 }
 
 .rack .tile-elem-container {
-    width: 6.66%;
+    width: 14.28%;
     height: 100%;
     float: left;
     text-align: center;
@@ -234,4 +242,8 @@ body {
 
 .is-turn {
     background: #f7fc50;
+}
+
+.game-btns a {
+    margin-top: 0.5em;
 }

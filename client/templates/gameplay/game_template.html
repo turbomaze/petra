@@ -1,52 +1,84 @@
 <template name="gameTemplate">
-    <div class="room-players">
-        <ul class="list-group">
-            {{#each playersAndScores}}
-                <li class="list-group-item {{isTurn}}">
-                    {{username}}: {{score}} points
-                </li>
-            {{/each}}
-        </ul>
-    </div>
-
-    <div class="letter-grid">
-        {{#each gameData.tiles}}
-            <div class="tile-elem-container">
-                <div class="tile-elem {{multClass}}" id="tile-{{_id}}">
-                    {{{multText}}}
-                </div>
-                <div class="tile-letter {{filledClass}}
-                     {{selectedClass}}" id="letter-{{_id}}">
-                    {{letter}}
-                </div>
-                {{#if letter}}
-                    <div class="tile-score">
-                        {{score}}
+    <div class="row game-container">
+        <div class="col-xs-12 col-sm-8">
+            <h3 class="room-title">{{gameData.title}}</h3>
+            <div class="letter-grid">
+                {{#each gameData.tiles}}
+                    <div class="tile-elem-container">
+                        <div class="tile-elem {{multClass}}" id="tile-{{_id}}">
+                            {{{multText}}}
+                        </div>
+                        <div class="tile-letter {{filledClass}}
+                             {{selectedClass}}" id="letter-{{_id}}">
+                            {{letter}}
+                        </div>
+                        {{#if letter}}
+                            <div class="tile-score">
+                                {{score}}
+                            </div>
+                        {{/if}}
                     </div>
-                {{/if}}
+                {{/each}}
             </div>
-        {{/each}}
-    </div>
+        </div>
 
-    <hr>
-
-    <div class="rack">
-        {{#each gameData.rack}}
-            <div class="tile-elem-container">
-                <div class="rack-letter" id="rack-letter-{{_id}}">
-                    {{letter}}
-                </div>
-                {{#if letter}}
-                    <div class="tile-score">
-                        {{score}}
+        <div class="col-xs-12 col-sm-4">
+            <div class="row">
+                <div class="col-xs-5 col-sm-12">
+                    <h3>Players</h3>
+                    <div class="room-players">
+                        <ul class="list-group">
+                            {{#each playersAndScores}}
+                                <li class="list-group-item {{isTurn}}">
+                                {{username}}: {{score}} points
+                                </li>
+                            {{/each}}
+                        </ul>
                     </div>
-                {{/if}}
-            </div>
-        {{/each}}
+                </div>
 
-        <input type="button" id="recall-btn"
-               value="Recall">
-        <input type="button" id="submit-move-btn"
-               value="Submit move">
+                <div class="col-xs-7 col-sm-12">
+                    <h3>Letter rack</h3>
+                    <div class="rack">
+                        {{#each gameData.rack}}
+                            <div class="tile-elem-container">
+                                <div class="rack-letter" id="rack-letter-{{_id}}">
+                                    {{letter}}
+                                </div>
+                                {{#if letter}}
+                                    <div class="tile-score">
+                                        {{score}}
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                    </div>
+
+                    <div class="row game-btns">
+                        <div class="col-xs-4 col-sm-6">
+                            <a href="#" style="width: 100%"
+                               class="btn btn-primary"
+                               id="recall-btn">
+                                Recall
+                            </a>
+                        </div>
+                        <div class="col-xs-4 col-sm-6">
+                            <a href="#" style="width: 100%"
+                               class="btn btn-danger"
+                               id="pass-move-btn">
+                                Pass
+                            </a>
+                        </div>
+                        <div class="col-xs-4 col-sm-12">
+                            <a href="#" style="width: 100%"
+                               class="btn btn-primary"
+                               id="submit-move-btn">
+                                Submit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>

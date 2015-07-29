@@ -8,7 +8,8 @@ Template.gameTemplate.helpers({
         var rawData = GameRooms.findOne(this._id, {
             fields: {
                 playerRacks: 1,
-                tiles: 1
+                tiles: 1,
+                title: 1
             }
         });
         for (var ti = 0; ti < rawData.tiles.length; ti++) {
@@ -39,7 +40,8 @@ Template.gameTemplate.helpers({
         }
         return {
             tiles: rawData.tiles,
-            rack: rawData.playerRacks[Meteor.userId()]
+            rack: rawData.playerRacks[Meteor.userId()],
+            title: rawData.title || 'Game board'
         };
     },
 
