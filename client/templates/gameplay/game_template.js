@@ -26,7 +26,6 @@ Template.gameTemplate.helpers({
                     rawData.tiles[ti].filledClass = 'filled';
                     //an actual letter is here
                     if (placedTileIds.indexOf(ti) !== -1) { //and so is a staged letter
-                        console.log('found a conflict!');
                         tileIdsToRemove.push(ti);
                     }
                 } else {
