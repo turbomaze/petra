@@ -16,7 +16,14 @@ Template.gameRoomPage.events({
     'click .start': function(e, tmpl) {
         e.preventDefault();
 
-        Meteor.call('startGame', this._id);
+        Meteor.call('startGame', this._id, function(err, result) {
+            if (err) return Errors.throw(err.reason);
+
+            if (result.success) {
+                //ga
+                ga('send', 'event', 'game', 'start');
+            }
+        });
     },
     'click .delete': function(e, tmpl) {
         e.preventDefault();
@@ -29,6 +36,9 @@ Template.gameRoomPage.events({
                     'Only the room owner can delete this room.'
                 );
             } else if (result.success) {
+                //ga
+                ga('send', 'event', 'game', 'delete');
+
                 Router.go('home');
             }
         });

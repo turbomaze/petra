@@ -285,6 +285,12 @@ Template.gameTemplate.events({
                     );
                 } else if (result.success) {
                     stage = []; //clear the stage; these changes will live on!
+
+                    //ga
+                    ga('send', 'event', 'game', 'move','word');
+                    if (result.gameOver) {
+                        ga('send', 'event', 'game', 'end');
+                    }
                 }
             }
         );
@@ -305,7 +311,7 @@ Template.gameTemplate.events({
                         return Errors.throw(
                             'You\'re not in this game room.'
                         );
-                    } else if (result.gameOver) {
+                    } else if (result.gameOver && !result.success) {
                         return Errors.throw(
                             'This game is already over.'
                         );
@@ -314,7 +320,11 @@ Template.gameTemplate.events({
                             'It isn\'t your turn!'
                         );
                     } else {
-                        //do nothing, all good
+                        //ga
+                        ga('send', 'event', 'game', 'move', 'pass');
+                        if (result.gameOver) {
+                            ga('send', 'event', 'game', 'end');
+                        }
                     }
                 }
             );
@@ -337,6 +347,9 @@ Template.gameTemplate.events({
                         'You need to be in a room to forfeit.'
                     );
                 } else if (result.success) {
+                    //ga
+                    ga('send', 'event', 'game', 'forfeit');
+
                     Router.go('home');
                 }
             });
