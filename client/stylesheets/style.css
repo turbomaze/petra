@@ -167,23 +167,23 @@ body {
 }
 
 .tile-elem-container .tile-elem.mult-dl {
-    background-color: #1890F2;
-    border: 1px solid #0673CC;
+    background-color: #f26282;
+    border: 1px solid #e86265;
 }
 
 .tile-elem-container .tile-elem.mult-tl {
-    background-color: #00DB4C;
-    border: 1px solid #06BA44;
+    background-color: #00dbd3;
+    border: 1px solid #4cb6c0;
 }
 
 .tile-elem-container .tile-elem.mult-dw {
-    background-color: #FA2D41;
-    border: 1px solid #E32235;
+    background-color: #279c23;
+    border: 1px solid #207f1f;
 }
 
 .tile-elem-container .tile-elem.mult-tw {
-    background-color: #FFC517;
-    border: 1px solid #DEAB14;
+    background-color: #666666;
+    border: 1px solid #474747;
 }
 
 .tile-elem-container .tile-letter.with-letter {
