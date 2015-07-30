@@ -11,7 +11,8 @@ Template.gameTemplate.helpers({
                 playerRacks: 1,
                 tiles: 1,
                 title: 1,
-                turn: 1
+                turn: 1,
+                winner: 1
             }
         });
         if (!rawData) return [];
@@ -85,7 +86,8 @@ Template.gameTemplate.helpers({
         return {
             tiles: rawData.tiles,
             rack: rawData.playerRacks[Meteor.userId()],
-            title: rawData.title || 'Game board'
+            title: rawData.title || 'Game board',
+            winner: rawData.winner
         };
     },
 
@@ -244,6 +246,10 @@ Template.gameTemplate.events({
                     return Errors.throw(
                         'You\'re not in this game room.'
                     );
+                } else if (result.gameOver) {
+                    return Errors.throw(
+                        'This game is already over.'
+                    );
                 } else if (result.notTheirTurn) {
                     return Errors.throw(
                         'It isn\'t your turn!'
@@ -298,6 +304,10 @@ Template.gameTemplate.events({
                     if (result.notInRoom) {
                         return Errors.throw(
                             'You\'re not in this game room.'
+                        );
+                    } else if (result.gameOver) {
+                        return Errors.throw(
+                            'This game is already over.'
                         );
                     } else if (result.notTheirTurn) {
                         return Errors.throw(

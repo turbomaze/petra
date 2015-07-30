@@ -6,6 +6,19 @@
                 {{#each gameData.tiles}}
                     {{> tile}}
                 {{/each}}
+
+                {{#if gameData.winner}}
+                    <div class="win-cont win-cont-top">
+                        <span>
+                            {{gameData.winner.username}} wins!
+                        </span>
+                    </div>
+                    <div class="win-cont win-cont-bot">
+                        <span>
+                            {{gameData.winner.score}} points
+                        </span>
+                    </div>
+                {{/if}}
             </div>
         </div>
 
