@@ -1,6 +1,7 @@
 Template.gameTemplate.onCreated(function() {
     //reset session variables
     Session.set('selected-tile', false);
+    Session.set('current-turn', false);
 });
 
 Template.gameTemplate.helpers({
@@ -9,9 +10,12 @@ Template.gameTemplate.helpers({
             fields: {
                 playerRacks: 1,
                 tiles: 1,
-                title: 1
+                title: 1,
+                turn: 1
             }
         });
+        if (!rawData) return [];
+
         var placedTileIds = stage.map(function(placement) {
             return placement[0];
         });
@@ -52,9 +56,33 @@ Template.gameTemplate.helpers({
             }
         }
 
+        //fix stage conflicts
         stage = stage.filter(function(placement) {
             return tileIdsToRemove.indexOf(placement[0]) === -1;
         });
+
+        //detect turn changes
+        if (rawData.turn !== Session.get('current-turn')) {
+            if (Session.get('current-turn') !== false) {
+                var beep = new Audio('/audio/beep.mp3');
+                beep.play();
+            }
+            var turnPref = 'YOUR TURN - ';
+            if (document.title.indexOf(turnPref) === 0) { //already there
+                if (rawData.turn !== Meteor.userId()) { //not them
+                    document.title = document.title.substring(
+                        turnPref.length
+                    ); //get rid of it
+                }
+            } else { //it isn't there
+                if (rawData.turn === Meteor.userId()) { //it is them
+                    document.title = turnPref+document.title;
+                }
+            }
+
+            Session.set('current-turn', rawData.turn);
+        }
+
         return {
             tiles: rawData.tiles,
             rack: rawData.playerRacks[Meteor.userId()],
@@ -71,6 +99,7 @@ Template.gameTemplate.helpers({
             }
         });
         var playerList = [];
+        if (!rawData || !rawData.players) return playerList;
         for (var pi = 0; pi < rawData.players.length; pi++) {
             var playersId = rawData.players[pi]._id;
             playerList.push({
