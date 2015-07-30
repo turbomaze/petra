@@ -1,3 +1,30 @@
+html, body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin: 0 auto -6em;
+}
+
+footer, .wrapper .push {
+    height: 6em;
+}
+
+footer {
+    background: #dddcd6;
+}
+
+footer .ghb-cont {
+    text-align: left;
+    margin-top: 2rem;
+}
+
+footer .credit {
+    text-align: right;
+    margin-top: 2rem;
+}
+
 .grid-block, .shard {
     background: #fff;
     border-radius: 3px;
@@ -31,6 +58,10 @@ body {
     -webkit-column-width: 16em;
     -moz-column-gap: 1em;
     -webkit-column-gap:1em;
+}
+
+.game-room-page {
+    margin-bottom: 20px;
 }
 
 .left-col {

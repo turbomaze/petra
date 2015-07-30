@@ -1,9 +1,29 @@
 <template name="layout">
-    <div class="container">
+    <div class="container wrapper">
         {{> header}}
         {{> meteorErrors}}
         <div id="main">
             {{> yield}}
         </div>
+
+        <div class="push"></div>
     </div>
+
+    <footer>
+        <div class="footer-div">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-6 credit">
+                        by <a href="https://igliu.com" target="_blank">
+                            Anthony Liu
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 ghb-cont">
+                        <iframe src="https://ghbtns.com/github-btn.html?user=turbomaze&repo=petra&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </template>
