@@ -38,9 +38,10 @@
                 <div class="col-xs-7 col-sm-12">
                     <h3>Letter rack</h3>
                     <div class="rack">
-                        {{#each gameData.rack}}
+                        {{#each playerRack}}
                             <div class="tile-elem-container">
-                                <div class="rack-letter" id="rack-letter-{{_id}}">
+                                <div class="rack-letter
+                                     {{selected}}" id="rack-letter-{{_id}}">
                                     {{letter}}
                                 </div>
                                 {{#if letter}}
@@ -83,28 +84,28 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-xs-12">
-                    <h3>How to play</h3>
-                    <ul>
-                        <li>
-                            After clicking a grid spot, click on a rack
-                            letter to place a tile there.
-                        </li>
-                        <li>
-                            Place tiles to form words along horizontal and
-                            vertical lines.
-                        </li>
-                        <li>
-                            Words need to branch off of words already on the board.
-                        </li>
-                        <li>
-                            The game ends when there are no more tiles or when
-                            everyone has passed their turn consecutively.
-                        </li>
-                    </ul>
-                </div>
             </div>
+        </div>
+
+        <div class="col-xs-12">
+            <h3>How to play</h3>
+            <ul>
+                <li>
+                    To place a tile, click on or type one of your rack
+                    letters and then select a grid location.
+                </li>
+                <li>
+                    Place tiles to form words along horizontal and
+                    vertical lines.
+                </li>
+                <li>
+                    Words need to branch off of words already on the board.
+                </li>
+                <li>
+                    The game ends when there are no more tiles or when
+                    everyone has passed their turn consecutively.
+                </li>
+            </ul>
         </div>
     </div>
 </template>

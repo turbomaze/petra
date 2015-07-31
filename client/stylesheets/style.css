@@ -120,7 +120,7 @@ body {
 }
 
 .game-container {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 
 .room-title {
@@ -238,7 +238,6 @@ body {
     border: 1px solid #8b8c1d;
 }
 
-
 .rack {
     width: 210px;
     height: 30px;
@@ -270,6 +269,11 @@ body {
     font-size: 18px;
     z-index: 1;
     border: 1px solid #DCDCDC;
+}
+
+.rack .tile-elem-container .rack-letter.selected {
+    background-color: rgba(228,228,228,0.85);
+    border: 1px solid #bababa;
 }
 
 .is-turn {
