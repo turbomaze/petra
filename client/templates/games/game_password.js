@@ -37,6 +37,9 @@ Template.gamePassword.events({
                 } else if (result.wrongPassword) {
                     Session.set('gamePasswordErrors', {password: 'Incorrect password.'});
                 } else if (result.success) {
+                    //ga
+                    ga('send', 'event', 'game', 'join');
+
                     Router.go('gameRoomPage', {
                         _id: roomId
                     });

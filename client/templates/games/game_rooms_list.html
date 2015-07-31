@@ -5,15 +5,17 @@
         {{> accountForm}}
     {{/if}}
 
-    <div>
+    {{#if gameRooms.count}}
         <div class="game-rooms-container">
             {{#each gameRooms}}
                 {{> gameRoom}}
-            {{else}}
-                <p class="col-xs-12">
-                    There aren't any open games at the moment.
-                </p>
             {{/each}}
         </div>
-    </div>
+    {{else}}
+        <div class="row">
+            <div class="col-xs-12">
+                There aren't any open games at the moment.
+            </div>
+        </div>
+    {{/if}}
 </template>

@@ -4,21 +4,21 @@
             <h3 class="room-title">{{gameData.title}}</h3>
             <div class="letter-grid">
                 {{#each gameData.tiles}}
-                    <div class="tile-elem-container">
-                        <div class="tile-elem {{multClass}}" id="tile-{{_id}}">
-                            {{{multText}}}
-                        </div>
-                        <div class="tile-letter {{filledClass}}
-                             {{selectedClass}}" id="letter-{{_id}}">
-                            {{letter}}
-                        </div>
-                        {{#if letter}}
-                            <div class="tile-score">
-                                {{score}}
-                            </div>
-                        {{/if}}
-                    </div>
+                    {{> tile}}
                 {{/each}}
+
+                {{#if gameData.winner}}
+                    <div class="win-cont win-cont-top">
+                        <span>
+                            {{gameData.winner.username}} wins!
+                        </span>
+                    </div>
+                    <div class="win-cont win-cont-bot">
+                        <span>
+                            {{gameData.winner.score}} points
+                        </span>
+                    </div>
+                {{/if}}
             </div>
         </div>
 
@@ -29,9 +29,7 @@
                     <div class="room-players">
                         <ul class="list-group">
                             {{#each playersAndScores}}
-                                <li class="list-group-item {{isTurn}}">
-                                {{username}}: {{score}} points
-                                </li>
+                                {{> playerListItem}}
                             {{/each}}
                         </ul>
                     </div>
@@ -40,9 +38,10 @@
                 <div class="col-xs-7 col-sm-12">
                     <h3>Letter rack</h3>
                     <div class="rack">
-                        {{#each gameData.rack}}
+                        {{#each playerRack}}
                             <div class="tile-elem-container">
-                                <div class="rack-letter" id="rack-letter-{{_id}}">
+                                <div class="rack-letter
+                                     {{selected}}" id="rack-letter-{{_id}}">
                                     {{letter}}
                                 </div>
                                 {{#if letter}}
@@ -55,30 +54,81 @@
                     </div>
 
                     <div class="row game-btns">
-                        <div class="col-xs-4 col-sm-6">
+                        <div class="col-xs-6 col-sm-6">
                             <a href="#" style="width: 100%"
                                class="btn btn-primary"
                                id="recall-btn">
                                 Recall
                             </a>
                         </div>
-                        <div class="col-xs-4 col-sm-6">
-                            <a href="#" style="width: 100%"
-                               class="btn btn-danger"
-                               id="pass-move-btn">
-                                Pass
-                            </a>
-                        </div>
-                        <div class="col-xs-4 col-sm-12">
+                        <div class="col-xs-6 col-sm-6">
                             <a href="#" style="width: 100%"
                                class="btn btn-primary"
                                id="submit-move-btn">
                                 Submit
                             </a>
                         </div>
+                        <div class="col-xs-6 col-sm-6">
+                            <a href="#" style="width: 100%"
+                               class="btn btn-danger"
+                               id="pass-move-btn">
+                                Pass
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-6">
+                            <a href="#" style="width: 100%"
+                               class="btn btn-danger"
+                               id="forfeit-btn">
+                                Forfeit
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-xs-12">
+            <h3>How to play</h3>
+            <ul>
+                <li>
+                    To place a tile, click on or type one of your rack
+                    letters and then select a grid location.
+                </li>
+                <li>
+                    Place tiles to form words along horizontal and
+                    vertical lines.
+                </li>
+                <li>
+                    Words need to branch off of words already on the board.
+                </li>
+                <li>
+                    The game ends when there are no more tiles or when
+                    everyone has passed their turn consecutively.
+                </li>
+            </ul>
+        </div>
     </div>
+</template>
+
+<template name="tile">
+    <div class="tile-elem-container">
+        <div class="tile-elem {{multClass}}" id="tile-{{_id}}">
+            {{{multText}}}
+        </div>
+        <div class="tile-letter {{filledClass}}
+            {{selectedClass}}" id="letter-{{_id}}">
+            {{letter}}
+        </div>
+        {{#if letter}}
+            <div class="tile-score">
+                {{score}}
+            </div>
+        {{/if}}
+    </div>
+</template>
+
+<template name="playerListItem">
+    <li class="list-group-item {{isTurn}}">
+        {{username}}: {{score}} points
+    </li>
 </template>

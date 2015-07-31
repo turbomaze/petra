@@ -1,3 +1,30 @@
+html, body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin: 0 auto -6em;
+}
+
+footer, .wrapper .push {
+    height: 6em;
+}
+
+footer {
+    background: #dddcd6;
+}
+
+footer .ghb-cont {
+    text-align: left;
+    margin-top: 2rem;
+}
+
+footer .credit {
+    text-align: right;
+    margin-top: 2rem;
+}
+
 .grid-block, .shard {
     background: #fff;
     border-radius: 3px;
@@ -31,6 +58,10 @@ body {
     -webkit-column-width: 16em;
     -moz-column-gap: 1em;
     -webkit-column-gap:1em;
+}
+
+.game-room-page {
+    margin-bottom: 20px;
 }
 
 .left-col {
@@ -89,7 +120,7 @@ body {
 }
 
 .game-container {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 
 .room-title {
@@ -102,6 +133,7 @@ body {
     margin: 0px auto;
     font-size: 16px;
     line-height: 30px;
+    position: relative;
 }
 
 .letter-grid * {
@@ -167,23 +199,23 @@ body {
 }
 
 .tile-elem-container .tile-elem.mult-dl {
-    background-color: #1890F2;
-    border: 1px solid #0673CC;
+    background-color: #f26282;
+    border: 1px solid #e86265;
 }
 
 .tile-elem-container .tile-elem.mult-tl {
-    background-color: #00DB4C;
-    border: 1px solid #06BA44;
+    background-color: #00dbd3;
+    border: 1px solid #4cb6c0;
 }
 
 .tile-elem-container .tile-elem.mult-dw {
-    background-color: #FA2D41;
-    border: 1px solid #E32235;
+    background-color: #279c23;
+    border: 1px solid #207f1f;
 }
 
 .tile-elem-container .tile-elem.mult-tw {
-    background-color: #FFC517;
-    border: 1px solid #DEAB14;
+    background-color: #666666;
+    border: 1px solid #474747;
 }
 
 .tile-elem-container .tile-letter.with-letter {
@@ -205,7 +237,6 @@ body {
     background-color: rgba(210, 207, 4, 0.9);
     border: 1px solid #8b8c1d;
 }
-
 
 .rack {
     width: 210px;
@@ -240,10 +271,43 @@ body {
     border: 1px solid #DCDCDC;
 }
 
+.rack .tile-elem-container .rack-letter.selected {
+    background-color: rgba(228,228,228,0.85);
+    border: 1px solid #bababa;
+}
+
 .is-turn {
     background: #f7fc50;
 }
 
 .game-btns a {
     margin-top: 0.5em;
+}
+
+.win-cont {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    background: rgba(255, 255, 187, 0.8);
+    height: 75px;
+    display: table;
+    z-index: 2;
+}
+
+.win-cont-top {
+    top: 150px;
+    font-size: 1.718em;
+}
+.win-cont-top span {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.win-cont-bot {
+    bottom: 150px;
+    font-size: 1.414em;
+}
+.win-cont-bot span {
+    display: table-cell;
+    vertical-align: top;
 }

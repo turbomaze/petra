@@ -1,3 +1,3 @@
-/* Petra v0.6 */
+/* Petra v1.0 */
 
 Meteor.subscribe('userData');

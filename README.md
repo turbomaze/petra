@@ -26,5 +26,19 @@ leave the game room, another user is randomly chosen to be the room's
 owner.
 
 ## Game Play
-There's no game play functionality just yet. It's just a lobby system right
-now.
+Once the room owner starts the game, everyone receives 7 randomly chosen
+letters per [Scrabble's letter distribution](https://en.wikipedia.org/wiki/Scrabble_letter_distributions)
+(minus the blank tiles). Players then place their tiles on a 15 by 15 grid to
+form words (from the [SOWPODS](https://en.wikipedia.org/wiki/SOWPODS) dictionary).
+
+Words need to lie along vertical or horizontal lines, and they need to branch
+off of words that are already on the board (or go through the center). The
+amount of points each word is worth depends on its constituent letters and any
+multiplier tiles it lies on. There are double-letter, double-word, triple-letter,
+and triple-word multiplier tiles.
+
+If players can't think of any words, they can pass their turns with no penalty.
+But if everyone passes consecutively, the game ends and the player with
+the most points is declared the winner. The only other way the game can end is
+if there are no more tiles to distribute to players and someone uses up
+all of their letters.
