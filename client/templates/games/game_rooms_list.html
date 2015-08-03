@@ -1,4 +1,20 @@
 <template name="gameRoomsList">
+    <div class="shard">
+        <div class="row">
+            <div class="col-xs-6 col-sm-4">
+                Petra is a real-time, multiplayer word game.
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                Think: Scrabble online with up
+                to 8 friends (or strangers).
+            </div>
+            <div class="hidden-xs col-sm-4">
+                You can create private or public
+                game rooms, and registering is as easy as typing in a username.
+            </div>
+        </div>
+    </div>
+
     {{#if currentUser}}
         {{> gameRoomForm}}
     {{else}}

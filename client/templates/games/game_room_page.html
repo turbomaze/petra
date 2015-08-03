@@ -2,9 +2,25 @@
     <div class="game-room-page page shard">
         {{#if open}}
             <div class="row">
-                <div class="col-xs-6" style="height: 100%">
-                    <h3>{{title}}</h3>
-
+                <div class="col-xs-12 col-sm-6">
+                    {{#if title}}
+                        <h3>{{title}}</h3>
+                    {{else}}
+                        <h3>Players</h3>
+                    {{/if}}
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            {{author}}
+                            <span style="float: right" class="glyphicon glyphicon-king" aria-hidden="true"></span>
+                        </li>
+                        {{#each normalPlayers}}
+                            <li class="list-group-item">
+                                {{username}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-6" style="height: 100%">
                     <div>
                         <strong>Room password: </strong>
                         {{#if password}}
@@ -18,20 +34,6 @@
                         <strong>Max # players: </strong>
                         {{maxPlayers}}
                     </div>
-                </div>
-                <div class="right-col col-xs-6">
-                    <h3>Players</h3>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            {{author}}
-                            <span style="float: right" class="glyphicon glyphicon-king" aria-hidden="true"></span>
-                        </li>
-                        {{#each normalPlayers}}
-                            <li class="list-group-item">
-                                {{username}}
-                            </li>
-                        {{/each}}
-                    </ul>
                 </div>
             </div>
             {{#if isRoomOwner}}

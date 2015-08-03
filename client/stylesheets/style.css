@@ -64,14 +64,6 @@ body {
     margin-bottom: 20px;
 }
 
-.left-col {
-    border-right: 1px solid #eee;
-}
-
-.right-col {
-    border-left: 1px solid #eee;
-}
-
 .game-room {
     display: inline-block;
     padding:  .25rem 15px 15px;
