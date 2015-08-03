@@ -42,6 +42,7 @@ function stagePlacement(roomId, letter, rackId, tileId) {
             turn: 1
         }
     });
+    if (!gameData) return;
 
     //can only place on their turn
     if (gameData.turn !== Meteor.userId()) {
@@ -178,6 +179,31 @@ function backspaceLetter(roomId, tileId) {
     Session.set('selected-tile', neighbor);
 }
 
+letterPress = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var roomId = Router.current().params._id;
+    var selLetter = String.fromCharCode(e.keyCode);
+    if (e.keyCode < 32 || e.keyCode > 126) selLetter = false;
+    var sl = Session.get('selected-letter');
+    var sr = Session.get('selected-rack-item');
+    var st = Session.get('selected-tile');
+    if (selLetter !== false && st !== false) {
+        stagePlacement(roomId, selLetter, false, st);
+    } else {
+        Session.set('selected-letter', selLetter);
+        Session.set('selected-rack-item', false);
+        Session.set('selected-tile', false);
+
+        if (e.keyCode === 8 && st !== false) { //backspace
+            backspaceLetter(roomId, st);
+        }
+    }
+
+    return false;
+};
+
 Template.gameTemplate.onCreated(function() {
     //reset session variables
     Session.set('selected-letter', false);
@@ -187,30 +213,7 @@ Template.gameTemplate.onCreated(function() {
 });
 
 Template.gameTemplate.onRendered(function() {
-    document.addEventListener('keydown', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var roomId = Router.current().params._id;
-        var selLetter = String.fromCharCode(e.keyCode);
-        if (e.keyCode < 32 || e.keyCode > 126) selLetter = false;
-        var sl = Session.get('selected-letter');
-        var sr = Session.get('selected-rack-item');
-        var st = Session.get('selected-tile');
-        if (selLetter !== false && st !== false) {
-            stagePlacement(roomId, selLetter, false, st);
-        } else {
-            Session.set('selected-letter', selLetter);
-            Session.set('selected-rack-item', false);
-            Session.set('selected-tile', false);
-
-            if (e.keyCode === 8 && st !== false) { //backspace
-                backspaceLetter(roomId, st);
-            }
-        }
-
-        return false;
-    }, false);
+    document.addEventListener('keydown', letterPress, false);
 });
 
 Template.gameTemplate.helpers({
